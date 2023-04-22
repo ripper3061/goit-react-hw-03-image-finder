@@ -8,11 +8,11 @@ import {
 } from './Searchbar.styled';
 import { BiSearch } from 'react-icons/bi';
 
-export const Searchbar = ({ onSubmit, inputValue, onChange }) => {
+export const Searchbar = ({ onSubmit, inputValue, activBtn, onChange }) => {
   return (
     <SearchbarLayout>
       <SearchForm onSubmit={onSubmit}>
-        <SearchFormBtn type="submit">
+        <SearchFormBtn type="submit" disabled={activBtn}>
           <BiSearch size="24" />
           <SearchFormBtnLabel>Search</SearchFormBtnLabel>
         </SearchFormBtn>

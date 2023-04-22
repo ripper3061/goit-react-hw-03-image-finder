@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button';
+import { Loader } from './Loader/Loader';
 import { AppLayout } from './App.styled';
 import { getImagesByName } from 'services/api';
 
@@ -67,14 +68,20 @@ export class App extends Component {
     }));
   };
 
+  disableButton = () => {
+    return this.state.searchQuery === '' ? true : false;
+  };
+
   render() {
     return (
       <AppLayout>
         <Searchbar
           onSubmit={this.handleSubmit}
           inputValue={this.state.searchQuery}
+          activBtn={this.disableButton()}
           onChange={this.handleChange}
         />
+        <Loader isLoading={this.state.isLoading} />
         {this.state.images.length > 0 && (
           <ImageGallery images={this.state.images} />
         )}
