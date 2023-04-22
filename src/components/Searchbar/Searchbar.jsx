@@ -1,4 +1,4 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {
   SearchbarLayout,
   SearchForm,
@@ -28,4 +28,11 @@ export const Searchbar = ({ onSubmit, inputValue, activBtn, onChange }) => {
       </SearchForm>
     </SearchbarLayout>
   );
+};
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  activBtn: PropTypes.bool.isRequired,
+  inputValue: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
