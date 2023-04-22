@@ -1,7 +1,8 @@
+import { Component } from 'react';
 import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
+import { Button } from './Button/Button';
 import { AppLayout } from './App.styled';
-import { Component } from 'react';
 import { getImagesByName } from 'services/api';
 
 export class App extends Component {
@@ -10,6 +11,7 @@ export class App extends Component {
     searchQuery: '',
     page: null,
     isLoading: false,
+    isLoadMoreShown: false,
     error: false,
   };
 
@@ -34,6 +36,7 @@ export class App extends Component {
       const images = [...this.state.images, ...fetchedImages.hits];
       this.setState({
         images: images,
+        isLoadMoreShown: images.length < fetchedImages.totalHits,
       });
     } catch {
       this.setState({
@@ -57,6 +60,13 @@ export class App extends Component {
     this.setState({ searchQuery: event.currentTarget.value });
   };
 
+  handleClickOnLoadBtn = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+      isLoading: true,
+    }));
+  };
+
   render() {
     return (
       <AppLayout>
@@ -67,6 +77,9 @@ export class App extends Component {
         />
         {this.state.images.length > 0 && (
           <ImageGallery images={this.state.images} />
+        )}
+        {!this.state.isLoading && this.state.isLoadMoreShown && (
+          <Button onClick={this.handleClickOnLoadBtn} />
         )}
       </AppLayout>
     );
