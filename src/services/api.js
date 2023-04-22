@@ -6,7 +6,7 @@ axios.defaults.baseURL = 'https://pixabay.com/api/';
 export const getImagesByName = async () => {
   const response = await axios.get('', {
     params: {
-      q: cat,
+      q: 'cat',
       page: 1,
       key: API_KEY,
       image_type: 'photo',
@@ -14,5 +14,6 @@ export const getImagesByName = async () => {
       per_page: 12,
     },
   });
+  console.log(response.data);
   return response.data;
 };

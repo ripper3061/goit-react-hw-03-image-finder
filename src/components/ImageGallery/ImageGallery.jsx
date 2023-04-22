@@ -5,7 +5,13 @@ export const ImageGallery = ({ images }) => {
   return (
     <ImageGalleryLayout>
       {images.map(image => {
-        return <ImageGalleryItem />;
+        return (
+          <ImageGalleryItem
+            key={image.id}
+            imageUrl={image.webformatURL}
+            tags={image.tags}
+          />
+        );
       })}
     </ImageGalleryLayout>
   );
