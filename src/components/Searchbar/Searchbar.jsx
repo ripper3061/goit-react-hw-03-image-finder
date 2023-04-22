@@ -8,10 +8,10 @@ import {
 } from './Searchbar.styled';
 import { BiSearch } from 'react-icons/bi';
 
-export const Searchbar = () => {
+export const Searchbar = ({ onSubmit, inputValue, onChange }) => {
   return (
     <SearchbarLayout>
-      <SearchForm>
+      <SearchForm onSubmit={onSubmit}>
         <SearchFormBtn type="submit">
           <BiSearch size="24" />
           <SearchFormBtnLabel>Search</SearchFormBtnLabel>
@@ -22,6 +22,8 @@ export const Searchbar = () => {
           autocomplete="off"
           autoFocus
           placeholder="Search images and photos"
+          value={inputValue}
+          onChange={onChange}
         />
       </SearchForm>
     </SearchbarLayout>
