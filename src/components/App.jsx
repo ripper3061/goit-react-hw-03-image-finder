@@ -3,7 +3,7 @@ import { Searchbar } from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import { Button } from './Button/Button';
 import { Loader } from './Loader/Loader';
-import { AppLayout } from './App.styled';
+import { AppLayout, ErrorMessage } from './App.styled';
 import { getImagesByName } from 'services/api';
 
 export class App extends Component {
@@ -13,7 +13,7 @@ export class App extends Component {
     page: null,
     isLoading: false,
     isLoadMoreShown: false,
-    error: false,
+    error: '',
   };
 
   componentDidMount() {
@@ -29,19 +29,22 @@ export class App extends Component {
   }
 
   fetchImages = async () => {
+    const { searchQuery, page } = this.state;
+
     try {
-      const fetchedImages = await getImagesByName(
-        this.state.searchQuery,
-        this.state.page
-      );
+      const fetchedImages = await getImagesByName(searchQuery, page);
       const images = [...this.state.images, ...fetchedImages.hits];
       this.setState({
         images: images,
         isLoadMoreShown: images.length < fetchedImages.totalHits,
+        error:
+          images.length === 0
+            ? 'Sorry, there are no images matching your search query.'
+            : '',
       });
     } catch {
       this.setState({
-        error: true,
+        error: 'Ops, failed to load. Please try again.',
       });
     } finally {
       this.setState({ isLoading: false });
@@ -73,19 +76,21 @@ export class App extends Component {
   };
 
   render() {
+    const { isLoading, images, error, isLoadMoreShown, searchQuery } =
+      this.state;
+
     return (
       <AppLayout>
         <Searchbar
           onSubmit={this.handleSubmit}
-          inputValue={this.state.searchQuery}
+          inputValue={searchQuery}
           activBtn={this.disableButton()}
           onChange={this.handleChange}
         />
-        <Loader isLoading={this.state.isLoading} />
-        {this.state.images.length > 0 && (
-          <ImageGallery images={this.state.images} />
-        )}
-        {!this.state.isLoading && this.state.isLoadMoreShown && (
+        <Loader isLoading={isLoading} />
+        {images.length > 0 && <ImageGallery images={images} />}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+        {!isLoading && isLoadMoreShown && (
           <Button onClick={this.handleClickOnLoadBtn} />
         )}
       </AppLayout>
