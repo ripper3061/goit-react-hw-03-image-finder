@@ -1,14 +1,39 @@
 import PropTypes from 'prop-types';
-import { GalleryItem } from './ImageGalleryItem.styled';
-import { GalleryItemImage } from './ImageGalleryItem.styled';
+import { Component } from 'react';
+import { GalleryItem, GalleryItemImage } from './ImageGalleryItem.styled';
+import { Modal } from 'components/Modal/Modal';
 
-export const ImageGalleryItem = ({ imageUrl, tags }) => {
-  return (
-    <GalleryItem>
-      <GalleryItemImage src={imageUrl} alt={tags} loading="lazy" />
-    </GalleryItem>
-  );
-};
+export class ImageGalleryItem extends Component {
+  state = {
+    showModal: false,
+  };
+
+  toggleModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
+  render() {
+    const { imageUrl, tags, largeImageUrl } = this.props;
+    console.log(largeImageUrl);
+
+    return (
+      <>
+        <GalleryItem onClick={this.toggleModal}>
+          <GalleryItemImage src={imageUrl} alt={tags} loading="lazy" />
+        </GalleryItem>
+        {this.state.showModal && (
+          <Modal
+            onClose={this.toggleModal}
+            largeImg={largeImageUrl}
+            alt={tags}
+          />
+        )}
+      </>
+    );
+  }
+}
 
 ImageGalleryItem.propTypes = {
   imageUrl: PropTypes.string.isRequired,
