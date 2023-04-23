@@ -8,6 +8,12 @@ export class ImageGalleryItem extends Component {
     showModal: false,
   };
 
+  static propTypes = {
+    imageUrl: PropTypes.string.isRequired,
+    tags: PropTypes.string.isRequired,
+    largeImageUrl: PropTypes.string.isRequired,
+  };
+
   toggleModal = () => {
     this.setState(({ showModal }) => ({
       showModal: !showModal,
