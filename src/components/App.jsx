@@ -10,6 +10,7 @@ export class App extends Component {
   state = {
     images: [],
     searchQuery: '',
+    firstSearch: '',
     page: null,
     isLoading: false,
     isLoadMoreShown: false,
@@ -51,8 +52,24 @@ export class App extends Component {
     }
   };
 
-  handleSubmit = event => {
+  handleSubmit = (inputValue, event) => {
     event.preventDefault();
+    if (!inputValue.trim()) {
+      return this.setState({
+        error: 'Enter your query to search',
+      });
+    }
+
+    if (!this.state.firstSearch) {
+      this.setState({
+        firstSearch: inputValue,
+      });
+    }
+
+    if (this.state.firstSearch === this.state.searchQuery) {
+      return alert('You already see the results on request');
+    }
+
     this.setState({
       images: [],
       page: 1,
@@ -61,7 +78,10 @@ export class App extends Component {
   };
 
   handleChange = event => {
-    this.setState({ searchQuery: event.currentTarget.value });
+    this.setState({
+      searchQuery: event.currentTarget.value,
+      firstSearch: '',
+    });
   };
 
   handleClickOnLoadBtn = () => {
@@ -69,10 +89,6 @@ export class App extends Component {
       page: prevState.page + 1,
       isLoading: true,
     }));
-  };
-
-  disableButton = () => {
-    return this.state.searchQuery === '' ? true : false;
   };
 
   render() {
@@ -84,7 +100,6 @@ export class App extends Component {
         <Searchbar
           onSubmit={this.handleSubmit}
           inputValue={searchQuery}
-          activBtn={this.disableButton()}
           onChange={this.handleChange}
         />
         <Loader isLoading={isLoading} />
