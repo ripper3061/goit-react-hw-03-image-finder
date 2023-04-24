@@ -53,20 +53,23 @@ export class App extends Component {
   };
 
   handleSubmit = (inputValue, event) => {
+    const { firstSearch, searchQuery } = this.state;
+
     event.preventDefault();
+
     if (!inputValue.trim()) {
       return this.setState({
         error: 'Enter your query to search',
       });
     }
 
-    if (!this.state.firstSearch) {
+    if (!firstSearch) {
       this.setState({
         firstSearch: inputValue,
       });
     }
 
-    if (this.state.firstSearch === this.state.searchQuery) {
+    if (firstSearch === searchQuery) {
       return alert('You already see the results on request');
     }
 
